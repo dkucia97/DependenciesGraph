@@ -3,17 +3,23 @@ import matplotlib.pyplot as plt
 import os
 from os import listdir
 import sample
+from tkinter import *
 
+def loadFolder():
+    root=Tk()
+    #opens file manager
+    path=filedialog.askdirectory(parent=root,initialdir="/",title='Please select a directory')
+    root.destroy()
+    return path
 
-def createGraph(path=os.path.join( "C:\\Users\\mkolisz11\\Desktop\\test" )):
+def createGraph(path=loadFolder()):
     g=nx.DiGraph() # create direct graph 
     files_to_parse=list(filter(lambda f: f.endswith(".py") ,listdir(path))) #only python files
     for file in files_to_parse:
         g.add_node(extract_filename(file))
         find_edges_in_file(file,g,path)
     return g
-    
-    
+   
 
 
 def drawGraph(graph):
@@ -22,7 +28,7 @@ def drawGraph(graph):
 
 
 def find_edges_in_file(file,g,path):
-    with  open(path+"\\"+file, 'r') as fr:
+    with  open(path+"/"+file, 'r') as fr:
         for number, line in enumerate(fr):
             if("from" in line):
                 tab=line.split()
