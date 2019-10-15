@@ -23,21 +23,28 @@ def createGraph(path=loadFolder()):
 
 
 def drawGraph(graph):
-    nx.draw(graph, with_labels=True, font_weight='bold')
+    pos = nx.spring_layout(graph)
+    nx.draw(graph,pos, with_labels=True, font_weight='bold')
+    edge_labels = dict([((u,v),d['weight']) for u,v,d in graph.edges(data=True)])
+    nx.draw_networkx_edge_labels(graph,pos,edge_labels = edge_labels)
     plt.show()
 
 
-def find_edges_in_file(file,g,path):
-    with  open(path+"/"+file, 'r') as fr:
+def find_edges_in_file(file,g,folderPath):
+    filePath = folderPath+"/"+file
+    with  open(filePath, 'r') as fr:
         for number, line in enumerate(fr):
             if("from" in line):
                 tab=line.split()
                 if(tab[0]=="from"):
-                    g.add_edge(extract_filename(file),tab[3])
+                    w = sample.count_import(filePath,tab[3])
+                    g.add_edge(extract_filename(file),tab[3], weight = w)
             elif("import" in line):
                 tab=line.split()
                 if(tab[0]=="import"):
-                    g.add_edge(extract_filename(file),tab[1])
+                    w = sample.count_import(filePath,tab[1])
+                    print(w)
+                    g.add_edge(extract_filename(file),tab[1],weight = w)
 
             
 def extract_filename(file):
