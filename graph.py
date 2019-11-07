@@ -174,7 +174,7 @@ def createFunModuleGraph(path="./"):
         for func in list_of_file_fun:
             for fl in files_to_parse:
                 if fl == this_file:
-                    g.add_node(func)
+                    g.add_node(func, weight=count_method_size(path+"/"+file,func))
                 else:
                     count = count + count_method1(path+"/"+fl, func)
         g.add_node(extract_filename(file),weight = count)
@@ -195,15 +195,13 @@ def createFunModuleGraph(path="./"):
         
         g.add_edge(extract_filename(file),extract_filename(fl),weight = count)
         
-        
-
     matplotlib.pyplot.figure()
     pos = networkx.spring_layout(g)
     networkx.draw(g,pos, with_labels=True, font_weight='bold')
     
     pos_attr = {}
     for node, coords in pos.items():
-        pos_attr[node] = (coords[0], coords[1] +00.07)
+        pos_attr[node] = (coords[0], coords[1] +00.05)
     
     node_attr = networkx.get_node_attributes(g, 'weight')
     custom_node_attrs = {}
@@ -225,4 +223,4 @@ def createFunModuleGraph(path="./"):
 createFunModuleGraph(loadFolder())
 
 #createGraph(loadFolder())
-create_function_graph(loadFolder())
+#create_function_graph(loadFolder())
