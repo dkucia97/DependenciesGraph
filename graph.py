@@ -1,12 +1,12 @@
-import networkx 
-import matplotlib.pyplot 
+import networkx
+import matplotlib.pyplot
 import os
 from os import listdir
 import sample
 from tkinter import *
 import tkinter.filedialog as filedialog
 import re
-
+matplotlib.pyplot.figure()
 def loadFolder():
     root=Tk()
     #opens file manager
@@ -15,21 +15,21 @@ def loadFolder():
     return path
 
 def createGraph(path="./"):
-    g=networkx.DiGraph() # create direct graph 
+    g=networkx.DiGraph() # create direct graph
     files_to_parse=get_python_files(path) #only python files
-    
+
     for file in files_to_parse:
         g.add_node(extract_filename(file),waga = extract_filesize(file,g,path))
         find_edges_in_file(file,g,path)
 
-    matplotlib.pyplot.figure()
+    #matplotlib.pyplot.figure()
     pos = networkx.spring_layout(g)
     networkx.draw(g,pos, with_labels=True, font_weight='bold')
-    
+
     pos_attr = {}
     for node, coords in pos.items():
         pos_attr[node] = (coords[0], coords[1] +00.07)
-    
+
     node_attr = networkx.get_node_attributes(g, 'waga')
     custom_node_attrs = {}
     for node, attr in node_attr.items():
@@ -39,8 +39,8 @@ def createGraph(path="./"):
 
     edge_labels = dict([((u,v),d['weight']) for u,v,d in g.edges(data=True)])
     networkx.draw_networkx_edge_labels(g,pos,edge_labels = edge_labels)
-    
-    matplotlib.pyplot.show()
+
+    #matplotlib.pyplot.show()
 
 def find_edges_in_file(file,g,path):
     with  open(path+"/"+file, 'r') as fr:
@@ -57,7 +57,7 @@ def find_edges_in_file(file,g,path):
                     print(w)
                     g.add_edge(extract_filename(file),tab[1],weight = w)
 
-            
+
 def extract_filename(file):
     return file.split(".")[0]  #cut extension .py
 
@@ -70,7 +70,7 @@ def get_python_files(path):
     return list(filter(lambda f: f.endswith(".py") ,listdir(path)))
 
 def create_function_graph(path="./"):
-    g=networkx.DiGraph() # create direct graph 
+    g=networkx.DiGraph() # create direct graph
     files_to_parse=get_python_files(path) #only python files
     allFunctions=[]
     tmpFunctions=[]
@@ -89,14 +89,14 @@ def create_function_graph(path="./"):
                     g.add_edge(fun,otherFun,weight = methodCount)
 
     ##  labels copied from other graph
-    matplotlib.pyplot.figure()
+    #matplotlib.pyplot.figure()
     pos = networkx.spring_layout(g)
     networkx.draw(g,pos, with_labels=True, font_weight='bold')
-    
+
     pos_attr = {}
     for node, coords in pos.items():
         pos_attr[node] = (coords[0], coords[1] +00.07)
-    
+
     node_attr = networkx.get_node_attributes(g, 'waga')
     custom_node_attrs = {}
     for node, attr in node_attr.items():
@@ -107,7 +107,7 @@ def create_function_graph(path="./"):
 
     networkx.draw_networkx_labels(g,pos_attr, labels=custom_node_attrs)
     ##
-    matplotlib.pyplot.show()
+    #matplotlib.pyplot.show()
 
 
 def get_functions_names_from_file(path):
@@ -132,7 +132,7 @@ def count_method(path, method, otherMethod):
             if otherMethod in x:
                 count=count+1
         elif str in x:
-            t = 1    
+            t = 1
     f.close()
     return count
 
@@ -146,9 +146,9 @@ def count_method_size(path, method): #returns function line count
            if 'def ' in x:
                 t = 0
                 return count
-           count=count+1   
+           count=count+1
         elif str in x:
-            t = 1    
+            t = 1
     f.close()
     return count
 
@@ -162,7 +162,7 @@ def count_method1(path, method):
     return count
 
 def createFunModuleGraph(path="./"):
-    g=networkx.DiGraph() # create direct graph 
+    g=networkx.DiGraph() # create direct graph
     files_to_parse=get_python_files(path) #only python files
     tmp_f_t_p = files_to_parse
     print(tmp_f_t_p)
@@ -192,17 +192,17 @@ def createFunModuleGraph(path="./"):
                     g.add_edge(func, extract_filename(file),weight = tmp_count)
                 else:
                     count = count_method1(path+"/"+fl, func) + count_method1(path+"/"+file, func)
-        
+
         g.add_edge(extract_filename(file),extract_filename(fl),weight = count)
-        
-    matplotlib.pyplot.figure()
+
+    #matplotlib.pyplot.figure()
     pos = networkx.spring_layout(g)
     networkx.draw(g,pos, with_labels=True, font_weight='bold')
-    
+
     pos_attr = {}
     for node, coords in pos.items():
         pos_attr[node] = (coords[0], coords[1] +00.05)
-    
+
     node_attr = networkx.get_node_attributes(g, 'weight')
     custom_node_attrs = {}
     for node, attr in node_attr.items():
@@ -213,7 +213,7 @@ def createFunModuleGraph(path="./"):
 
     networkx.draw_networkx_labels(g,pos_attr, labels=custom_node_attrs)
     ##
-    matplotlib.pyplot.show()
+    #matplotlib.pyplot.show()
 
 
 
@@ -221,6 +221,6 @@ def createFunModuleGraph(path="./"):
 
 
 createFunModuleGraph(loadFolder())
-
-#createGraph(loadFolder())
-#create_function_graph(loadFolder())
+createGraph(loadFolder())
+create_function_graph(loadFolder())
+matplotlib.pyplot.show()
