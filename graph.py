@@ -271,9 +271,9 @@ def manchester(path="./"):  ##zaj6
     networkx.draw_networkx_labels(g, pos_attr, labels=custom_node_attrs)
 
 
-lf = loadFolder()
-createFunModuleGraph(lf)
-createGraph(lf)
-create_function_graph(lf)
+#lf = loadFolder()
+#createFunModuleGraph(lf)
+#createGraph(lf)
+#create_function_graph(lf)
 #manchester() historyjka nr 6
-matplotlib.pyplot.show()
+#matplotlib.pyplot.show()
