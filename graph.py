@@ -91,7 +91,10 @@ def create_function_graph(path="./"):
     ##  labels copied from other graph
     #matplotlib.pyplot.figure()
     pos = networkx.spring_layout(g)
-    networkx.draw(g,pos, with_labels=True, font_weight='bold')
+    color_map = []
+    for node in g:
+        color_map.append("green")
+    networkx.draw(g,pos,node_color = color_map, with_labels=True, font_weight='bold')
 
     pos_attr = {}
     for node, coords in pos.items():
@@ -197,11 +200,14 @@ def createFunModuleGraph(path="./"):
 
     #matplotlib.pyplot.figure()
     pos = networkx.spring_layout(g)
-    networkx.draw(g,pos, with_labels=True, font_weight='bold')
+    color_map = []
+    for node in g:
+        color_map.append("red")
+    networkx.draw(g,pos,node_color = color_map, with_labels=True, font_weight='bold')
 
     pos_attr = {}
     for node, coords in pos.items():
-        pos_attr[node] = (coords[0], coords[1] +00.05)
+        pos_attr[node] = (coords[0], coords[1] + 00.05)
 
     node_attr = networkx.get_node_attributes(g, 'weight')
     custom_node_attrs = {}
@@ -209,6 +215,7 @@ def createFunModuleGraph(path="./"):
         custom_node_attrs[node] = str(attr)
 
     edge_labels = dict([((u,v),d['weight']) for u,v,d in g.edges(data=True)])
+    networkx
     networkx.draw_networkx_edge_labels(g,pos,edge_labels = edge_labels)
 
     networkx.draw_networkx_labels(g,pos_attr, labels=custom_node_attrs)
@@ -219,8 +226,8 @@ def createFunModuleGraph(path="./"):
 
 
 
-
-createFunModuleGraph(loadFolder())
-createGraph(loadFolder())
-create_function_graph(loadFolder())
+lf = loadFolder()
+createFunModuleGraph(lf)
+createGraph(lf)
+create_function_graph(lf)
 matplotlib.pyplot.show()
