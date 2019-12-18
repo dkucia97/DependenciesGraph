@@ -55,10 +55,10 @@ def division(path="./"):
 
     edge_labels = dict([((u,v),d['weight']) for u,v,d in g.edges(data=True)])
     networkx
+
     networkx.draw_networkx_edge_labels(g,pos,edge_labels = edge_labels)
 
     networkx.draw_networkx_labels(g,pos_attr, labels=custom_node_attrs)
-
     matplotlib.pyplot.show()
 
 lf = graph.loadFolder()
