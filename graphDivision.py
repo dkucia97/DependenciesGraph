@@ -7,16 +7,17 @@ matplotlib.pyplot.figure()
 def get_max(fun_dic):
     val_max = 0
     guard = 1
-    for x in range(len(fun_dic) + 1):
-        if x is not 0:
-            tmp = fun_dic.get(x)
-            print("tmp :" + str(tmp))
-            b = str(tmp).split(': ')[1].split("}")[0]
-            c = int(b)
-            print(type(c))
-            if c > val_max:
-                val_max = c
-                guard = x
+    iterator = 1
+    for x in fun_dic.items():
+        tmp = x
+        print("tmp :" + str(tmp))
+        b = str(tmp).split(': ')[1].split("}")[0]
+        c = int(b)
+        print(type(c))
+        if c > val_max:
+            val_max = c
+            guard = int(str(tmp).split('(')[1].split(',')[0])
+        iterator = iterator + 1
     toret = fun_dic.get(guard)
     fun1 = str(toret).split("'")[1].split("'")[0]
     fun2 = str(toret).split(" '")[1].split("',")[0]
@@ -81,14 +82,18 @@ def division(path="./"):
     color_map3 = []
     for node in g1:
         color_map1.append("green")
-    networkx.draw(g1, pos1, node_color=color_map1, with_labels=True, font_weight='bold')
-    for node in 2:
+    #networkx.draw(g1, pos1, node_color=color_map1, with_labels=True, font_weight='bold')
+    for node in g2:
         color_map2.append("red")
-    networkx.draw(g2, pos2, node_color=color_map2, with_labels=True, font_weight='bold')
+    #networkx.draw(g2, pos2, node_color=color_map2, with_labels=True, font_weight='bold')
     for node in g2:
         color_map3.append("yellow")
-    networkx.draw(g3, pos3, node_color=color_map3, with_labels=True, font_weight='bold')
+    #networkx.draw(g3, pos3, node_color=color_map3, with_labels=True, font_weight='bold')
 
+    g4 = networkx.compose(g1,g2)
+    g5 = networkx.compose(g4,g3)
+    pos5 = networkx.spring_layout(g5,center=[2,1])
+    networkx.draw(g5,with_labels=True,center=[2,1],weight="bold")
     pos_attr1 = {}
     pos_attr2 = {}
     pos_attr3 = {}
