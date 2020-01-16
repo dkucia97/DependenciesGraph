@@ -2,6 +2,7 @@ from tkinter import *
 import matplotlib.pyplot
 import graph
 import networkx
+import sample
 
 
 def button1():
@@ -23,6 +24,14 @@ def button4():
     matplotlib.pyplot.show()
 
 lf=graph.loadFolder()
+
+
+listOfFunNames,listOfFunCC=sample.count_cyclomatic_complexity(lf)
+#kontrolne printfy
+for item in listOfFunNames:
+    print(item)
+for item in listOfFunCC:
+    print(item)
 
 root=Tk()
     
