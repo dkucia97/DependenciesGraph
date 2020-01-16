@@ -69,7 +69,7 @@ def extract_filesize(file,g,folderPath):
 def get_python_files(path):
     return list(filter(lambda f: f.endswith(".py") ,listdir(path)))
 
-def create_function_graph(path="./"):
+def create_function_graph(path="./",ccFunctionList=[], ccWeightList=[]):
     g=networkx.DiGraph() # create direct graph
     files_to_parse=get_python_files(path) #only python files
     allFunctions=[]
@@ -79,7 +79,11 @@ def create_function_graph(path="./"):
         allFunctions+=get_functions_names_from_file(path+"/"+file)
         tmpFunctions=get_functions_names_from_file(path+"/"+file)
         for fun in tmpFunctions:
-            g.add_node(fun,waga = count_method_size(path+"/"+file,fun))
+            if(fun in ccFunctionList):
+                ccWeight=ccWeightList[ccFunctionList.index(fun)]
+            else:
+                ccWeight=0
+            g.add_node(fun,waga = (count_method_size(path+"/"+file,fun),ccWeight))
     #creating edges
     for file in files_to_parse:
         for fun in allFunctions :
@@ -164,7 +168,7 @@ def count_method1(path, method):
     f.close()
     return count
 
-def createFunModuleGraph(path="./"):
+def createFunModuleGraph(path="./",ccFunctionList=[], ccWeightList=[]):
     g=networkx.DiGraph() # create direct graph
     files_to_parse=get_python_files(path) #only python files
     tmp_f_t_p = files_to_parse
@@ -175,9 +179,13 @@ def createFunModuleGraph(path="./"):
         list_of_file_fun = get_functions_names_from_file(file)
         #
         for func in list_of_file_fun:
+            if(func in ccFunctionList):
+                ccWeight=ccWeightList[ccFunctionList.index(func)]
+            else:
+                ccWeight=0
             for fl in files_to_parse:
                 if fl == this_file:
-                    g.add_node(func, weight=count_method_size(path+"/"+file,func))
+                    g.add_node(func, weight=(count_method_size(path+"/"+file,func),ccWeight))
                 else:
                     count = count + count_method1(path+"/"+fl, func)
         g.add_node(extract_filename(file),weight = count)
