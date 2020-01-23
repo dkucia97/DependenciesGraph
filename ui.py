@@ -3,7 +3,9 @@ import matplotlib.pyplot
 import graph
 import networkx
 import sample
-
+import git
+repo = git.Repo(search_parent_directories=True)
+sha = repo.head.object.hexsha
 
 def button1():
     graph.createFunModuleGraph(lf,listOfFunNames,listOfFunCC)
@@ -23,6 +25,8 @@ def button4():
     graph.createGraph(lf)
     matplotlib.pyplot.show()
 
+
+
 lf=graph.loadFolder()
 
 
@@ -40,7 +44,10 @@ topFrame.pack()
 bottomFrame=Frame(root)
 bottomFrame.pack(side=BOTTOM)
 
-
+T = Text(bottomFrame, height=2, width=30)
+T.pack()
+T.insert(INSERT, "Git ver. hash: \n")
+T.insert(END, sha)
 fileGraphButton=Button(topFrame,text="File Graph", fg = "red", command=button1)
 methodGraphButton=Button(topFrame,text="Method Graph", fg="green", command=button2)
 packageGraphButton=Button(topFrame,text="Package Graph",fg="blue", command=button3)
@@ -50,6 +57,7 @@ fileGraphButton.pack(side=LEFT)
 methodGraphButton.pack(side=LEFT)
 packageGraphButton.pack(side=LEFT)
 oneToRuleThemAllButton.pack(side=BOTTOM)
+T.pack(side=BOTTOM)
 
 root.mainloop()
 #print("xd")
