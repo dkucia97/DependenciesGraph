@@ -92,7 +92,7 @@ def division(path="./"):
 
     g4 = networkx.compose(g1,g2)
     g5 = networkx.compose(g4,g3)
-    pos5 = networkx.spring_layout(g5,center=[2,1])
+    pos5 = networkx.spring_layout(g5,center=[1,1])
     networkx.draw(g5,with_labels=True,center=[2,1],weight="bold")
     pos_attr1 = {}
     pos_attr2 = {}
@@ -130,6 +130,6 @@ def division(path="./"):
     networkx.draw_networkx_labels(g3, pos_attr3, labels=custom_node_attrs3)
 
 
-lf = graph.loadFolder()
-division(lf)
-matplotlib.pyplot.show()
+#lf = graph.loadFolder()
+#division(lf)
+#matplotlib.pyplot.show()
